@@ -1,0 +1,38 @@
+﻿<Page
+    x:Class="PhantomHead.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PhantomHead"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" Height="500" Width="650">
+
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Height="500" VerticalAlignment="Top" Margin="0,0,0,0">
+        <Grid HorizontalAlignment="Left" Height="500" Margin="0,0,0,0" VerticalAlignment="Top" Width="650">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            
+            <Button x:Name="btnShutdown" Grid.Column="0" Grid.Row="0" Width="105" Grid.ColumnSpan="1" 
+                        Height="50" Margin="5,5,0,5" Content="Shutdown" Click="btnShutodown_Click"/>
+            
+            <Button x:Name="btnRestart" Grid.Column="1" Grid.Row="0" Width="105" Grid.ColumnSpan="1"
+                        Height="50" Margin="5,5,0,5" Content="Restart" Click="btnRestart_Click"/>
+
+            <Button x:Name="btnOpenAd5360Tests" Grid.Column="1" Grid.Row="2" Width="105" Grid.ColumnSpan="1"
+                        Height="50" Margin="5,5,0,5" Content="EEG Test" Click="btnOpenAd5360Tests_Click"/>
+        </Grid>
+    </Grid>
+</Page>
