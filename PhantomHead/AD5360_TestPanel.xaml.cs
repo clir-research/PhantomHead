@@ -174,7 +174,7 @@ namespace PhantomHead
                         String updateString;
                         updateString = "Stopped";
                         // Update the UI thread with the CoreDispatcher.
-                        CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(
+                        _ = CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(
                             CoreDispatcherPriority.High,
                             new DispatchedHandler(() =>
                             {
