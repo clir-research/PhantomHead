@@ -151,6 +151,7 @@ namespace PhantomHead
 
             }
 
+            stopPlayBack();
         }
 
         private async void btnReadFile_Click(object sender, RoutedEventArgs e)
@@ -242,6 +243,8 @@ namespace PhantomHead
                     ad5360.add_WrtieFrame(Lasttimeslice);
                 }
             }
+
+            stopPlayBack();
         }
 
         private async void btnRndFile_Click(object sender, RoutedEventArgs e)
