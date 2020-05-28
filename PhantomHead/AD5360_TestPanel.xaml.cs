@@ -106,6 +106,55 @@ namespace PhantomHead
             //}
         }
 
+        private async void btn5VoltWave_Click(object sender, RoutedEventArgs e)
+        {
+            EnablePlayback();
+
+            int count = 1000;
+            for (int index = 0; index < count; index++)
+            {
+                _TimeSlice timeslice = new _TimeSlice();
+                if (index % 2 == 0)
+                {
+                    for (int channel = 0; channel < 15; channel++)
+                    {
+                        try
+                        {
+                            var value = 1;
+                            _writeBuffer buff = new _writeBuffer(channel, value);
+                            timeslice.timeSlice.Add(buff);
+                        }
+                        catch (Exception ex)
+                        {
+                            var error = ex.Message.ToString();
+                        }
+                    }
+                }
+                else
+                {
+                    for (int channel = 0; channel < 15; channel++)
+                    {
+                        try
+                        {
+                            var value = (float)0.5;
+                            _writeBuffer buff = new _writeBuffer(channel, value);
+                            timeslice.timeSlice.Add(buff);
+                        }
+                        catch (Exception ex)
+                        {
+                            var error = ex.Message.ToString();
+                        }
+                    }
+                }
+                ad5360.add_WrtieFrame(timeslice);
+
+                System.Threading.Thread.Sleep(100);
+            }
+
+
+            stopPlayBack();
+        }
+
         private async void btnSquareWave_Click(object sender, RoutedEventArgs e)
         {
 
@@ -210,7 +259,7 @@ namespace PhantomHead
                         {
                             try
                             {
-                                var value = ((float)Convert.ToDouble(values[channel]) / 10);
+                                var value = ((float)Convert.ToDouble(values[channel]) / 100);
                                 if(isInverted == true)
                                 {
                                     value *= -1;
@@ -244,7 +293,7 @@ namespace PhantomHead
                 }
             }
 
-            stopPlayBack();
+            //stopPlayBack();
         }
 
         private async void btnRndFile_Click(object sender, RoutedEventArgs e)
