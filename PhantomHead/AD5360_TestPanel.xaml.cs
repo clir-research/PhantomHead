@@ -338,25 +338,28 @@ namespace PhantomHead
             }
             Stream.Dispose();
         }
-        //private void Click_write(object sender, RoutedEventArgs e)
-        //{
-        //    var volts = Convert.ToSingle(txt_Value.Text.ToString());
-        //    if (volts >= 5)
-        //    {
-        //        volts = (float)(5 - .0001);
-        //    }
-        //    if(volts <= -5)
-        //    {
-        //        volts = (float)(-5 + .0001);
-        //    }
-        //    _TimeSlice timeVolt = new _TimeSlice();
-        //    for (int index = 0; index < 16; index++)
-        //    {
-        //        var buff = new _writeBuffer(index, volts);
-        //        timeVolt.timeSlice.Add(buff);
-        //    }
-        //    ad5360.add_WrtieFrame(timeVolt);
-        //}
+        private void Click_write(object sender, RoutedEventArgs e)
+        {
+            var Channel = Convert.ToSingle(txt_ChannelValue.Text.ToString());
+            var volts = Convert.ToSingle(txt_VoltValue.Text.ToString());
+            if (volts >= 5)
+            {
+                volts = (float)(5 - .0001);
+            }
+            if (volts <= -5)
+            {
+                volts = (float)(-5 + .0001);
+            }
+            if(Channel > 15)
+                Channel = 15;
+            if (Channel < 0)
+                Channel = 0;
+
+            //volts = volts / 10;
+
+            var buff = new _writeBuffer((int)Channel, volts);
+            ad5360.WriteBuffer(buff);
+        }
 
         private void Click_Reset(object sender, RoutedEventArgs e)
         {

@@ -153,6 +153,11 @@ namespace SPIController
             }
         }
 
+        public void WriteBuffer(_writeBuffer value)
+        {
+            ad5360_Board.Write(value.buffer);
+        }
+
         #endregion // public functions
 
         #region private functions
