@@ -355,7 +355,7 @@ namespace PhantomHead
             if (Channel < 0)
                 Channel = 0;
 
-            //volts = volts / 10;
+            volts = volts / 10;
 
             var buff = new _writeBuffer((int)Channel, volts);
             ad5360.WriteBuffer(buff);
