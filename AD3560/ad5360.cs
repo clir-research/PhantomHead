@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using Windows.Devices.Enumeration;
 using Windows.Devices.Gpio;
 using Windows.Devices.Spi;
@@ -47,7 +48,7 @@ namespace SPIController
 
         internal async void ad5360_Setup(SpiMode spi_Mode, int clkFreq, int chipSelectLine, string spiDeviceSelection)
         {
-            if (clkFreq > 50000000) //Max write frequency 50 mHz
+            if (clkFreq > 20000000) //Max write frequency 50 mHz
             {
                 errorMsgs = "Clock Speed greater than 50 mHz";
                 return;
@@ -79,6 +80,15 @@ namespace SPIController
             ad_5360.Write(writeBuffer);
         }
 
+        public byte[] Read(byte[] writeBuffer)
+        {
+            byte[] result = new byte[3];
+            ad_5360.Write(writeBuffer);
+            ad_5360.Read(result);
+
+            return result;
+        }
+
         public void pulse_AD5360_Reset()
         {
             setPinStatus(GPIO_Reset, GpioPinValue.Low);
@@ -95,6 +105,25 @@ namespace SPIController
         {
             setPinStatus(GPIO_LDAC, GpioPinValue.Low);
             setPinStatus(GPIO_LDAC, GpioPinValue.High);
+        }
+
+        public void writeCRegister(byte[] value)
+        {
+
+        }
+
+        public float readCRegister(byte[] value)
+        {
+            return -999;
+        }
+        public void writeMRegister(byte[] value)
+        {
+
+        }
+
+        public float readMRegister(byte[] value)
+        {
+            return -999;
         }
 
         private void setPinStatus(GpioPin pin, GpioPinValue value)

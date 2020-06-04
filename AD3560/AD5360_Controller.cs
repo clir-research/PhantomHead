@@ -10,14 +10,6 @@ using Windows.UI.Xaml;
 
 namespace SPIController
 {
-    static class Constants
-    {
-        public const byte ad5360_Mode = 0xc0;
-        public const byte ad5360_A5 = 0x00;
-        public const byte ad5360_Group1 = 0x08;
-        public const byte ad5360_Group2 = 0x10;
-        
-    }
 
     public class AD5360_Controller
     {
@@ -158,6 +150,31 @@ namespace SPIController
             ad5360_Board.Write(value.buffer);
         }
 
+        public byte[] ReadBuffer(_writeBuffer value)
+        {
+            return ad5360_Board.Read(value.buffer);
+        }
+
+        public void WriteCRegister(int channel, float value)
+        {
+            byte[] writeValue = new byte[3];
+
+
+        }
+
+        public float ReadCRegister(int channel)
+        {
+            return -999;
+        }
+        public void WriteMRegister(int channel, float value)
+        {
+
+        }
+
+        public float ReadMRegister(int channel)
+        {
+            return -999;
+        }
         #endregion // public functions
 
         #region private functions
@@ -200,6 +217,6 @@ namespace SPIController
             }
         }
 
-         #endregion // private functions
+        #endregion // private functions
     }
 }

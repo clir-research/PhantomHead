@@ -33,6 +33,9 @@
 
             <Button x:Name="btnOpenAd5360Tests" Grid.Column="1" Grid.Row="2" Width="105" Grid.ColumnSpan="1"
                         Height="50" Margin="5,5,0,5" Content="EEG Test" Click="btnOpenAd5360Tests_Click"/>
+            
+            <Button x:Name="btnOpenAd5360Calibration" Grid.Column="0" Grid.Row="2" Width="105" Grid.ColumnSpan="1"
+                        Height="50" Margin="5,5,0,5" Content="Calibration" Click="btnOpenAd5360Calibration_Click"/>
         </Grid>
     </Grid>
 </Page>

@@ -89,6 +89,9 @@
     <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AD5360_CalibrationPanel.xaml.cs">
+      <DependentUpon>AD5360_CalibrationPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AD5360_TestPanel.xaml.cs">
       <DependentUpon>AD5360_TestPanel.xaml</DependentUpon>
     </Compile>
@@ -134,6 +137,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="AD5360_CalibrationPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="AD5360_TestPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

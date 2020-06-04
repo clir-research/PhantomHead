@@ -340,8 +340,8 @@ namespace PhantomHead
         }
         private void Click_write(object sender, RoutedEventArgs e)
         {
-            var Channel = Convert.ToSingle(txt_ChannelValue.Text.ToString());
-            var volts = Convert.ToSingle(txt_VoltValue.Text.ToString());
+            var Channel = Convert.ToSingle(txt_ChannelValue.Text);
+            var volts = Convert.ToSingle(txt_VoltValue.Text);
             if (volts >= 5)
             {
                 volts = (float)(5 - .0001);

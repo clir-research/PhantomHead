@@ -35,5 +35,12 @@ namespace PhantomHead
             this.Frame.Navigate(typeof(AD5360_TestPanel));//, testPanel);
 
         }
+        private void btnOpenAd5360Calibration_Click(object sender, RoutedEventArgs e)
+        {
+
+            this.Frame.Navigate(typeof(AD5360_CalibrationPanel));//, testPanel);
+
+        }
+
     }
 }
