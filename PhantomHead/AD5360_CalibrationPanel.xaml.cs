@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Devices.Gpio;
 using Windows.Devices.Spi;
@@ -60,44 +61,10 @@ namespace PhantomHead
             }
         }
 
-        private void Channel0Calibrate_Click(object sender, RoutedEventArgs e)
-        {
-            if (ad5360.active)
-            {
-                if (Ch0WriteChkBox.IsChecked == true)
-                {
-                    //write values
-                    WriteCalibrateChannel(0, Convert.ToSingle(txt_Channel0CRegister.Text), Convert.ToSingle(txt_Channel0MRegister.Text));
-                }
-                else
-                {
-                    txt_Channel0CRegister.Text = GetCalibrationValues(0, Mode.ad5360_ReadCreg);
-                    txt_Channel0MRegister.Text = GetCalibrationValues(0, Mode.ad5360_ReadMreg);
-                }
-            }
-        }
-
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             MainPage mainPage = new MainPage();
             this.Frame.Navigate(typeof(MainPage), mainPage);
-        }
-
-        private void Channel1Calibrate_Click(object sender, RoutedEventArgs e)
-        {
-            if (ad5360.active)
-            {
-                if (Ch0WriteChkBox.IsChecked == true)
-                {
-                    //write values
-                    WriteCalibrateChannel(0, Convert.ToSingle(txt_Channel0CRegister.Text), Convert.ToSingle(txt_Channel0MRegister.Text));
-                }
-                else
-                {
-                    txt_Channel1CRegister.Text = GetCalibrationValues(1, Mode.ad5360_ReadCreg);
-                    txt_Channel1MRegister.Text = GetCalibrationValues(1, Mode.ad5360_ReadMreg);
-                }
-            }
         }
 
         private void WriteCalibrateChannel(int channel, float regC, float regM)
@@ -107,6 +74,10 @@ namespace PhantomHead
             ad5360.WriteBuffer(RegCBuffer);
             ad5360.WriteBuffer(RegMBuffer);
         }
+
+
+
+        #region Get Calibration Values
 
         private string GetCalibrationValues(int channel, SPIController.Mode mode)
         {
@@ -125,7 +96,91 @@ namespace PhantomHead
             if (ad5360.active)
             {
                 //GetCurentCalibrationValues(0);
+                throw new NotImplementedException();
             }
         }
+
+        private void ChannelCalibrate_Click(object sender, RoutedEventArgs e)
+        {
+            var channel = Convert.ToInt32(txt_Channel.Text);
+            var cReg = Convert.ToSingle(txt_ChannelCRegister.Text);
+            var mReg = Convert.ToSingle(txt_ChannelMRegister.Text);
+            if (channel > 15)
+            {
+                txt_ChannelCRegister.Text = "-1";
+                txt_ChannelMRegister.Text = "-1";
+                return;
+            }
+            if (ad5360.active)
+            {
+                if (Ch0WriteChkBox.IsChecked == true)
+                {
+                    //write values
+                    WriteCalibrateChannel(channel, cReg, mReg);
+                    //read new values
+                    txt_ChannelCRegister.Text = GetCalibrationValues(channel, Mode.ad5360_ReadCreg);
+                    txt_ChannelMRegister.Text = GetCalibrationValues(channel, Mode.ad5360_ReadMreg);
+                }
+                else
+                {
+                    txt_ChannelCRegister.Text = GetCalibrationValues(channel, Mode.ad5360_ReadCreg);
+                    txt_ChannelMRegister.Text = GetCalibrationValues(channel, Mode.ad5360_ReadMreg);
+                }
+            }
+        }
+
+        private void Channel1Calibrate_Click(object sender, RoutedEventArgs e)
+        {
+            if (ad5360.active)
+            {
+                if (Ch0WriteChkBox.IsChecked == true)
+                {
+                    //write values
+                    WriteCalibrateChannel(0, Convert.ToSingle(txt_ChannelCRegister.Text), Convert.ToSingle(txt_ChannelMRegister.Text));
+                }
+                else
+                {
+                    txt_Channel1CRegister.Text = GetCalibrationValues(1, Mode.ad5360_ReadCreg);
+                    txt_Channel1MRegister.Text = GetCalibrationValues(1, Mode.ad5360_ReadMreg);
+                }
+            }
+        }
+
+        private void Channel2Calibrate_Click(object sender, RoutedEventArgs e)
+        {
+            if (ad5360.active)
+            {
+                if (Ch0WriteChkBox.IsChecked == true)
+                {
+                    //write values
+                    WriteCalibrateChannel(0, Convert.ToSingle(txt_Channel2CRegister.Text), Convert.ToSingle(txt_Channel2MRegister.Text));
+                }
+                else
+                {
+                    txt_Channel2CRegister.Text = GetCalibrationValues(2, Mode.ad5360_ReadCreg);
+                    txt_Channel2MRegister.Text = GetCalibrationValues(2, Mode.ad5360_ReadMreg);
+                }
+            }
+        }
+
+        private void Channel3Calibrate_Click(object sender, RoutedEventArgs e)
+        {
+            if (ad5360.active)
+            {
+                if (Ch0WriteChkBox.IsChecked == true)
+                {
+                    //write values
+                    WriteCalibrateChannel(0, Convert.ToSingle(txt_Channel3CRegister.Text), Convert.ToSingle(txt_Channel3MRegister.Text));
+                }
+                else
+                {
+                    txt_Channel3CRegister.Text = GetCalibrationValues(3, Mode.ad5360_ReadCreg);
+                    txt_Channel3MRegister.Text = GetCalibrationValues(3, Mode.ad5360_ReadMreg);
+                }
+            }
+        }
+
+
+        #endregion
     }
 }
