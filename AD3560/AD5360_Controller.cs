@@ -21,7 +21,6 @@ namespace SPIController
         IAsyncAction ad5360_Timer = null;
         IAsyncAction ad5360_TimeControl = null;
         //System.Threading.CancellationToken ad5360_TimerEnd = new System.Threading.CancellationToken();
-        private Boolean _Active = false;
         //Thread ad5360_Timer;
         private const int arduinoTimer = 27;
         private GpioPin GPIO_Timer;
@@ -45,7 +44,7 @@ namespace SPIController
         {
             get
             {
-                return _Active;
+                return ad5360_Board.IsSpiActive;
             }
         }
 

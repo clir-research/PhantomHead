@@ -15,6 +15,10 @@ namespace SPIController
         public const byte ad5360_Group2 = 0x10;
         public const byte ad5360_Creg = 0x80;
         public const byte ad5360_Mreg = 0x40;
+        public const byte ad5360_Read = 0x05; //00000101
+        public const byte ad5360_BaseRegC = 0x44; //0100 0100
+        public const byte ad5360_BaseRegM = 0x64; //0110 0100
+        public const byte ad5360_BaseCount = 0x80; //10000000
     }
 
     public enum Mode
@@ -66,6 +70,21 @@ namespace SPIController
                     buffer[2] = CalibMValue[1];
 
                     break;
+                case Mode.ad5360_ReadCreg:
+
+                    buffer[0] = Constants.ad5360_Read;
+                    var tmpReadCVal = BuildCRegReadChannel(channel);
+                    buffer[1] = tmpReadCVal[0];
+                    buffer[2] = tmpReadCVal[1];
+
+                    break;
+                case Mode.ad5360_ReadMreg:
+                    buffer[0] = Constants.ad5360_Read;
+                    var tmpReadMVal = BuildMRegReadChannel(channel);
+                    buffer[1] = tmpReadMVal[0];
+                    buffer[2] = tmpReadMVal[1];
+
+                    break;
             }
         }
 
@@ -108,6 +127,25 @@ namespace SPIController
 
             return result;
 
+        }
+
+        private byte[] BuildCRegReadChannel(int channel)
+        {
+
+            Byte[] result = new byte[2];
+            var value = Constants.ad5360_BaseRegC + (channel * Constants.ad5360_BaseCount);
+            result = BitConverter.GetBytes(value);
+
+            return result;
+        }
+        private byte[] BuildMRegReadChannel(int channel)
+        {
+            //0000 0101 0110 0100 0000 0000  read channel 0
+            Byte[] result = new byte[2];
+            var value = Constants.ad5360_BaseRegM + (channel * Constants.ad5360_BaseCount);
+            result = BitConverter.GetBytes(value);
+
+            return result;
         }
 
         private byte BuildMregChannel(int channel)

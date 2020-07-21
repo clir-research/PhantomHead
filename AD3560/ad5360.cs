@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Threading;
 using Windows.Devices.Enumeration;
 using Windows.Devices.Gpio;
 using Windows.Devices.Spi;
@@ -23,34 +24,28 @@ namespace SPIController
         private GpioPin GPIO_Clear;
         private GpioPin GPIO_Reset;
         private string errorMsgs;
-        private bool _Active = false;
 
-        public bool IsActive
-        {
-            get
-            {
-                return _Active;
-            }
-            set
-            {
-                _Active = value;
-            }
-        }
+        public bool IsGpioActive { get; private set; } = false;
+        public bool IsSpiActive { get; private set; } = false;
 
         public ad5360(SpiMode spi_Mode, int clkFreq, int chipSelectLine, string spiDeviceSelection)
         {
-            IsActive = InitGPIO();
-            if (IsActive)
+            IsGpioActive = InitGPIO();
+            if (IsGpioActive)
             {
-                this.ad5360_Setup(spi_Mode, clkFreq, chipSelectLine, spiDeviceSelection);
+                ad5360_Setup(spi_Mode, clkFreq, chipSelectLine, spiDeviceSelection);
             }
+            //while(!this.IsSpiActive)
+            //{
+            //    var test = false;
+            //}
         }
 
         internal async void ad5360_Setup(SpiMode spi_Mode, int clkFreq, int chipSelectLine, string spiDeviceSelection)
         {
-            if (clkFreq > 20000000) //Max write frequency 50 mHz
+            if (clkFreq > 50000000) //Max write frequency 50 MHz
             {
-                errorMsgs = "Clock Speed greater than 50 mHz";
+                errorMsgs = "Clock Speed greater than 50 MHz";
                 return;
             }
             try
@@ -66,7 +61,11 @@ namespace SPIController
                 var deviceInfo = await DeviceInformation.FindAllAsync(spiAqs);
 
                 ad_5360 = await SpiDevice.FromIdAsync(deviceInfo[0].Id, settings);
-                System.Diagnostics.Debug.WriteLine("InitSpi seccessful");
+                if (ad_5360 != null)
+                {
+                    System.Diagnostics.Debug.WriteLine("InitSpi seccessful");
+                    IsSpiActive = true;
+                }
             }
             catch (Exception ex)
             {
@@ -82,9 +81,13 @@ namespace SPIController
 
         public byte[] Read(byte[] writeBuffer)
         {
-            byte[] result = new byte[3];
+            byte[] TmpValue = new byte[4];
+            byte[] result = new byte[4];
             ad_5360.Write(writeBuffer);
-            ad_5360.Read(result);
+            ad_5360.Read(TmpValue);
+
+            result[0] = TmpValue[2];
+            result[1] = TmpValue[1];
 
             return result;
         }

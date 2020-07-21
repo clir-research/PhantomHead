@@ -1,0 +1,18 @@
+0000 0101 0110 0100 0000 0000  read reg M channel 0
+0000 0101 0100 0100 0000 0000  read reg C channel 0
+0000 0101 0110 0100 1000 0000  read reg M channel 0
+0000 0101 0100 0100 1000 0000  read reg C channel 0
+
+1000 0000 0000 0000
+1111 1111 1111 1111
+
+Base 0x5
+mReg 0x60
+cReg 0x40
+UchannelBase 0x4
+LchannelBase 0x5
+
+even channl = base + (ch/2)
+odd channel = base + ((ch-1)/2)
+
+

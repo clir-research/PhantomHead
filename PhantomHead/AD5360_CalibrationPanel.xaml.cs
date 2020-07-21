@@ -28,21 +28,18 @@ namespace PhantomHead
         private Boolean _StopEnabled = true;
         private const int ENABLE_PIN = 18;
         private GpioPin _enable_Timer;
+        private float[] CalibrationValueCreg;
+        private float[] CalibrationValueMreg;
 
         AD5360_Controller ad5360;
 
         public AD5360_CalibrationPanel()
         {
             this.InitializeComponent();
-            ad5360 = new AD5360_Controller(SpiMode.Mode1, (500 * 1000), 0, "SPI0");
+            ad5360 = new AD5360_Controller(SpiMode.Mode1, (200 * 1000), 0, "SPI0");
+            CalibrationValueCreg = new float[16];
+            CalibrationValueMreg = new float[16];
             Init_Enable();
-            GetCurentCalibrationValues();
-        }
-
-        private void GetCurentCalibrationValues()
-        {
-
-            ad5360.ReadBuffer();
         }
 
         private void Init_Enable()
@@ -65,7 +62,19 @@ namespace PhantomHead
 
         private void Channel0Calibrate_Click(object sender, RoutedEventArgs e)
         {
-            CalibrateChannel(0, Convert.ToSingle(txt_Channel0CRegister.Text), Convert.ToSingle(txt_Channel0MRegister.Text));
+            if (ad5360.active)
+            {
+                if (Ch0WriteChkBox.IsChecked == true)
+                {
+                    //write values
+                    WriteCalibrateChannel(0, Convert.ToSingle(txt_Channel0CRegister.Text), Convert.ToSingle(txt_Channel0MRegister.Text));
+                }
+                else
+                {
+                    txt_Channel0CRegister.Text = GetCalibrationValues(0, Mode.ad5360_ReadCreg);
+                    txt_Channel0MRegister.Text = GetCalibrationValues(0, Mode.ad5360_ReadMreg);
+                }
+            }
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
@@ -76,15 +85,47 @@ namespace PhantomHead
 
         private void Channel1Calibrate_Click(object sender, RoutedEventArgs e)
         {
-            CalibrateChannel(1, Convert.ToSingle(txt_Channel0CRegister.Text), Convert.ToSingle(txt_Channel0MRegister.Text));
+            if (ad5360.active)
+            {
+                if (Ch0WriteChkBox.IsChecked == true)
+                {
+                    //write values
+                    WriteCalibrateChannel(0, Convert.ToSingle(txt_Channel0CRegister.Text), Convert.ToSingle(txt_Channel0MRegister.Text));
+                }
+                else
+                {
+                    txt_Channel1CRegister.Text = GetCalibrationValues(1, Mode.ad5360_ReadCreg);
+                    txt_Channel1MRegister.Text = GetCalibrationValues(1, Mode.ad5360_ReadMreg);
+                }
+            }
         }
 
-        private void CalibrateChannel(int channel, float regC, float regM)
+        private void WriteCalibrateChannel(int channel, float regC, float regM)
         {
             var RegCBuffer = new _writeBuffer((int)channel, regC, Mode.ad5360_WriteCreg);
             var RegMBuffer = new _writeBuffer((int)channel, regM, Mode.ad5360_WriteMreg);
             ad5360.WriteBuffer(RegCBuffer);
             ad5360.WriteBuffer(RegMBuffer);
+        }
+
+        private string GetCalibrationValues(int channel, SPIController.Mode mode)
+        {
+            _writeBuffer writeBuffer = new _writeBuffer(channel, 0, mode);
+
+            var result = ad5360.ReadBuffer(writeBuffer);
+
+            var tmp = BitConverter.ToInt32(result, 0);
+
+            return tmp.ToString();
+
+        }
+
+        private void GetCalibValues_click(object sender, RoutedEventArgs e)
+        {
+            if (ad5360.active)
+            {
+                //GetCurentCalibrationValues(0);
+            }
         }
     }
 }
